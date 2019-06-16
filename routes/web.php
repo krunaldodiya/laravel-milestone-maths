@@ -20,4 +20,4 @@ Route::get('/feedback', 'HomeController@feedbackForm')->name('feedback');
 Route::post('/feedback', 'HomeController@sendFeedback')->name('feedback');
 
 Route::get("/reset-device", "HomeController@resetDevice")->name("reset.device");
-Route::get("/storage/{url}", "HomeController@getAssets")->name("get-assets-from-storage")->where('url', '.*');
+Route::get("/storage/{url}", "HomeController@getAssets")->name("get-assets-from-storage")->where('url', '.*$');
