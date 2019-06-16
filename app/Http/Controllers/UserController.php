@@ -7,6 +7,7 @@ use App\Http\Requests\AuthRequest;
 use App\User;
 use App\Http\Requests\UpdateUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -27,7 +28,9 @@ class UserController extends Controller
         $image = $request->image;
         $name = $image->getClientOriginalName();
 
-        $image->move("users", $name);
+        // $image->move("users", $name);
+        Storage::disk('public')->put('filename', "users/$name");
+
         auth('api')->user()->update(['avatar' => $name]);
 
         $user = $this->getUserById(auth('api')->user()->id);

@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\FeedbackMail;
 use Spatie\DbDumper\Databases\MySql;
 use Carbon\Carbon;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -76,5 +78,16 @@ class HomeController extends Controller
         User::where('id', $request->id)->update(['uid' => null, 'account_status' => 'Pending']);
 
         return redirect()->back();
+    }
+
+    public function getAssets(Request $request)
+    {
+        $defaultAsset = $request->url ? $request->url : 'users/default.png';
+
+        $storageExists = Storage::disk('public')->exists($defaultAsset);
+
+        $assetPath = $storageExists ? Storage::disk('public')->get($defaultAsset) : Storage::disk('public')->get('users/default.png');
+
+        return Image::make($assetPath)->response();
     }
 }
